@@ -3,45 +3,49 @@ package com.sid.bioflow
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.*
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.sid.bioflow.ui.theme.BioFlowTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
-            BioFlowTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+            BioFlowApp()
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+// Define the screens as an enum
+enum class Screen {
+    Home, Health, Chat, Settings, SOS
 }
 
-@Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    BioFlowTheme {
-        Greeting("Android")
+fun BioFlowApp() {
+    // State to hold the currently selected screen
+    var currentScreen by remember { mutableStateOf(Screen.Home) }
+
+    Scaffold(
+        bottomBar = {
+            BioFlowBottomNavigationBar(
+                currentScreen = currentScreen,
+                onScreenChange = { screen -> currentScreen = screen }
+            )
+        }
+    ) { innerPadding ->
+        // Use a Column to hold the current screen's content
+        Column(modifier = Modifier.padding(innerPadding)) {
+            // Use a when statement to show the correct screen
+            when (currentScreen) {
+                Screen.Home -> HomeScreen()
+                Screen.Health -> HealthScreen()
+                Screen.Chat -> ChatScreen()
+                Screen.Settings -> SettingsScreen()
+                Screen.SOS -> SosScreen()
+            }
+        }
     }
 }
