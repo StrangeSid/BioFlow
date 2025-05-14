@@ -4,12 +4,16 @@ package com.sid.bioflow
 import android.content.Context
 import android.graphics.Color
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toUri
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -30,8 +34,11 @@ fun ChatScreen(
         openCustomTab(context, url)
         onScreenChange(Screen.Home)
     } else {
+        Column() {
         Text("AI is not enabled", fontSize = 50.sp, textAlign = TextAlign.Center)
+        Spacer(modifier = Modifier.height(16.dp))
         Text("Go to Settings to enable AI", fontSize = 20.sp, textAlign = TextAlign.Center)
+    }
     }
 }
 fun openCustomTab(context: Context, url: String) {
